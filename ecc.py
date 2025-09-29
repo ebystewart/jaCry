@@ -36,12 +36,35 @@ class EllipticCurveCrypto:
 
         return Point(x3, y3)
 
+    # O(m) linear run-time complexity
+    def double_and_add(self, n, P):
+        
+        temp_point = Point(P.x, P.y)
+        # ignore the MSB 
+        binary = bin(n)[3:]
+
+        for binary_char in binary:
+            # point doubling operation
+            temp_point = self.point_addition(temp_point, temp_point)
+
+            if binary_char == '1':  
+                # point addition operation
+                temp_point = self.point_addition(temp_point, P)
+
+        return temp_point
+
+
+
 if __name__ == '__main__':
 
     ecc = EllipticCurveCrypto(0, 7)
 
     p = Point(1,1)
 
-    print(ecc.point_addition(p, p))
+    #print(ecc.point_addition(p, p))
+
+    print(ecc.double_and_add(100, p))
+
+
 
 
